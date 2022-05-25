@@ -27,7 +27,7 @@
 			(select count(*) from board_mst) as board_count_all,
 			bm.create_date,
 			bm.update_date
-		from board_mst bm left outer join user_mst um on(um.usercode = bm.board_writer);
+		from board_mst bm left outer join user_mst um on(um.usercode = bm.board_writer)
   	</select>
   	
   	<select id="getBoardListByPage" parameterType="Integer" resultMap="boardMap">
@@ -42,7 +42,7 @@
 			bm.create_date,
 			bm.update_date
 		from board_mst bm left outer join user_mst um on(um.usercode = bm.board_writer)
-		order by board_code desc limit ${index}, 5;
+		order by board_code desc limit ${index}, 5
   	</select>
   
 	<insert id="insertBoard" parameterType="com.springboot.study.domain.board.BoardMst" useGeneratedKeys="true" keyProperty="board_code">
@@ -61,15 +61,15 @@
 			bm.create_date,
 			bm.update_date
 		from board_mst bm left outer join user_mst um on(um.usercode = bm.board_writer)
-		where bm.board_code = #{boardCode};
+		where bm.board_code = #{boardCode}
 	</select>
 	
 	<update id="updateBoard" parameterType="com.springboot.study.domain.board.BoardMst" useGeneratedKeys="true" keyProperty="board_code">
-		update board_mst set board_title=#{board_title}, board_content=#{board_content} where board_code = #{board_code};
+		update board_mst set board_title=#{board_title}, board_content=#{board_content} where board_code = #{board_code}
 	</update>
 	
 	<delete id="deleteBoard" parameterType="Integer">
-		delete from board_mst where board_code=#{boardCode};
+		delete from board_mst where board_code=#{boardCode}
 	</delete>
 	
   </mapper>

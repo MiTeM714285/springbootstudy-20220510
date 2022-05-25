@@ -1,7 +1,6 @@
 package com.springboot.study.web.api;
 
 import java.util.List;
-import java.util.UUID;
 
 import javax.validation.Valid;
 
@@ -13,18 +12,13 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
 
 import com.springboot.study.config.auth.PrincipalDetails;
 import com.springboot.study.domain.user.User;
-import com.springboot.study.domain.user.UserDtl;
 import com.springboot.study.domain.user.UserRepository;
-import com.springboot.study.service.user.AccountService;
 import com.springboot.study.web.dto.CustomResponseDto;
 import com.springboot.study.web.dto.SignupRequestDto;
 

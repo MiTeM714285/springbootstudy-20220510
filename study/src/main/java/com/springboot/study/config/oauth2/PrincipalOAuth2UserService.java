@@ -30,7 +30,14 @@ public class PrincipalOAuth2UserService extends DefaultOAuth2UserService {
 		
 		String provider = userRequest.getClientRegistration().getRegistrationId(); // provider 생성
 		
-		Map<String, Object> attributes = oAuth2User.getAttributes(); // OAuth2 관련 자신의 정보들
+		Map<String, Object> attributes = null; // OAuth2 관련 자신의 정보들
+		if(provider.equals("naver") || provider.equals("kakao")) { // 네이버나 카카오일경우
+			attributes = (Map<String, Object>) oAuth2User.getAttributes().get("response"); // naver나 kakao는 response/id나 response/email로 제공함
+		} else { // google일 경우
+			attributes = oAuth2User.getAttributes(); 
+		}
+		
+		
 		
 		String oAuth2_username = createOAuth2Username(provider, attributes);
 		User userEntity = userRepository.findOAuth2UserByOAuth2Username(oAuth2_username);
@@ -59,7 +66,7 @@ public class PrincipalOAuth2UserService extends DefaultOAuth2UserService {
 	
 	private String createOAuth2Username(String provider, Map<String, Object> attributes) {
 		if(provider.equals("naver")) {
-			return null;
+			return provider + "_" + (String)attributes.get("id"); // naver의 id
 		} else if(provider.equals("google")) {
 			return provider + "_" + (String)attributes.get("sub"); // google은 id개념을 sub라는 명칭으로 사용
 		} else {

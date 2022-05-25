@@ -6,13 +6,11 @@ const usernameText = document.querySelector(".username-text");
 const textInputs = document.querySelectorAll(".text-inputs");
 const fileInput = document.querySelector(".file-input");
 const profileImgUrl = document.querySelector(".profile-img-url")
-let usercode = 0;
-
 
 async function imgSubmit() {
 	let formData = new FormData(document.querySelector("form")); // 함수가 호출되면 해당 form을 저장
 	
-	const url = `/api/v1/user/account/profile/img/${usercode}`;
+	const url = `/api/v1/user/account/profile/img`;
 	const option = {
 		method : "PUT",
 		headers : {},
@@ -47,7 +45,7 @@ getAuthenticationReq() // authentication/principal.js 의 함수, promise로 ret
 		textInputs[0].value = principal.username;
 		textInputs[1].value = principal.email;
 		textInputs[2].value = principal.name;
-		usercode = principal.usercode;
+		profileImgUrl.src = "/image/profile/" + principal.profile_img_url; // 프로필이미지 파일. /image/profile/는 WebMvcConfig.java에서 설정
 		
 	})
 	.catch(error => {

@@ -5,18 +5,22 @@
   
   <mapper namespace="com.springboot.study.domain.user.UserRepository">
   	<insert id="insertUser" parameterType="com.springboot.study.domain.user.User" useGeneratedKeys="true" keyProperty="usercode">
-  		insert into user_mst values(0, #{email}, #{name}, #{username}, #{oauth2_username}, #{password}, #{roles}, #{provider}, now(), now());
+  		insert into user_mst values(0, #{email}, #{name}, #{username}, #{oauth2_username}, #{password}, #{roles}, #{provider}, now(), now())
   	</insert>
   	
   	<select id="findUserByUsername" parameterType="String" resultType="com.springboot.study.domain.user.User">
-  		select usercode, email, name, username, oauth2_username, password, roles, provider, create_date, update_date from user_mst where username = #{username};
+  		select um.usercode, um.email, um.name, um.username, um.oauth2_username, um.password, um.roles, um.provider, um.create_date, um.update_date, ud.profile_img_url
+  		from user_mst um
+  		left outer join user_dtl ud on (ud.usercode = um.usercode)
+  		where um.username = #{username}
+  		
   	</select>
   	
   	<select id="findOAuth2UserByOAuth2Username" parameterType="String" resultType="com.springboot.study.domain.user.User">
-  		select usercode, email, name, username, oauth2_username, password, roles, provider, create_date, update_date from user_mst where oauth2_username = #{oauth2_username};
+  		select usercode, email, name, username, oauth2_username, password, roles, provider, create_date, update_date from user_mst where oauth2_username = #{oauth2_username}
   	</select>
   	
-  	<update id="updateProfileImg" parameterType="com.springboot.study.domain.user.UserDtl">
-  		update user_dtl set profile_img_url = #{profile_img_url} where usercode = #{usercode};
+  	<update id="updateProfileImg" parameterType="com.springboot.study.domain.user.User">
+  		update user_dtl set profile_img_url = #{profile_img_url} where usercode = #{usercode}
   	</update>
   </mapper>

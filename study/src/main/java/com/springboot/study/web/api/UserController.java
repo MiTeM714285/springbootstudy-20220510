@@ -1,11 +1,10 @@
 package com.springboot.study.web.api;
 
-import java.util.UUID;
-
 import javax.validation.Valid;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.springboot.study.domain.user.UserDtl;
+import com.springboot.study.config.auth.PrincipalDetails;
 import com.springboot.study.service.user.AccountService;
 import com.springboot.study.web.api.data.User;
 import com.springboot.study.web.dto.AccountRequestDto;
@@ -56,6 +55,8 @@ public class UserController {
 		}
 	}
 	*/
+	
+	// 로그인 관련 요청은 PrincipalDetailsService.java의 loadUserByUsername에
 
 	@PutMapping("/account/{username}")
 	public ResponseEntity<?> updateMember(@PathVariable String username, @Valid AccountRequestDto accountRequestDto, BindingResult bindingResult) {
@@ -81,18 +82,19 @@ public class UserController {
 	}
 	
 	
-	@PutMapping("/account/profile/img/{usercode}")
-	public ResponseEntity<?> updateProfileImg(@RequestPart MultipartFile file, @PathVariable int usercode) throws Exception {
-		String tempImageFileName = UUID.randomUUID().toString().replaceAll("-", "") + "_" + file.getOriginalFilename(); // 파일명에 무작위 중복방지문자 삽입
-		UserDtl userDtl = UserDtl.builder()
-				.usercode(usercode)
-				.profile_img_url(tempImageFileName)
-				.build();
-		boolean result = accountService.updateProfileImg(userDtl);
-		if(result) {
-			return new ResponseEntity<>(new CustomResponseDto<Boolean>(1, "프로필사진 수정 완료", result), HttpStatus.OK);
+	@PutMapping("/account/profile/img")
+	public ResponseEntity<?> updateProfileImg(@RequestPart MultipartFile file, @AuthenticationPrincipal PrincipalDetails principalDetails) throws Exception {
+		boolean result = accountService.updateProfileImg(file, principalDetails);
+		if (result) {
+			return new ResponseEntity<>(HttpStatus.OK);
 		} else {
-			return new ResponseEntity<>(new CustomResponseDto<Boolean>(-1, "프로필사진 수정 실패", result), HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
+	}
+	
+	@PutMapping("/account/profile/")
+	public ResponseEntity<?> updateProfile(@AuthenticationPrincipal PrincipalDetails principalDetails) {
+		
+		return new ResponseEntity<>(HttpStatus.OK);
 	}
 }

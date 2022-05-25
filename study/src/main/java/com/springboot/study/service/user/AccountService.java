@@ -1,7 +1,9 @@
 package com.springboot.study.service.user;
 
-import com.springboot.study.domain.user.UserDtl;
+import org.springframework.web.multipart.MultipartFile;
+
+import com.springboot.study.config.auth.PrincipalDetails;
 
 public interface AccountService {
-	public boolean updateProfileImg(UserDtl userdtl) throws Exception;
+	public boolean updateProfileImg(MultipartFile file, PrincipalDetails principalDetails) throws Exception;
 }

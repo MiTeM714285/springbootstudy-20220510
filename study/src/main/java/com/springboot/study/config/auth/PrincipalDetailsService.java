@@ -1,5 +1,7 @@
 package com.springboot.study.config.auth;
 
+import java.util.HashMap;
+
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -27,8 +29,7 @@ public class PrincipalDetailsService implements UserDetailsService{
 			return null; // uri는 auth/signin?error
 		}
 		
-		return new PrincipalDetails(userEntity); // Authentication 세션 저장 역할
+		return new PrincipalDetails(userEntity, new HashMap<String, Object>()); // Authentication 세션 저장 역할
 		
 	}
-
 }

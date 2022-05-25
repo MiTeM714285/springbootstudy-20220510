@@ -23,6 +23,7 @@ public class User {
 	private String roles; // ROLE_USER,ROLE_MANAGER,ROLE_ADMIN
 	private String oauth2_username;
 	private String provider;
+	private String profile_img_url;
 	
 	public List<String> getRoleList() {
 		if(this.roles.length() > 0) { // 권한이 부여되었다면
