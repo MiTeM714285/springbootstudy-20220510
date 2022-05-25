@@ -1,0 +1,40 @@
+server:
+  port: 8000 # 서버 포트 설정
+  servlet:
+    encoding: # 인코딩 UTF-8 설정
+      charset: UTF-8
+      enabled: true
+      force: true
+      force-response: true
+      force-request: true
+  tomcat:
+    uri-encoding: UTF-8
+
+# ViewResolver  
+spring:
+  mvc:
+    view:
+      prefix: /WEB-INF/views/
+      suffix: .jsp
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://mitem714285.iptime.org:3306/springboot_junil?useUnicode=true&characterEncoding=utf8&allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=Asia/Seoul&allowMultiQueries=true
+    username: mitem714285
+    password: TestPassword
+  security:
+    user:
+      name: test
+      password: 1234
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: 318529373292-39rp7gfar63k5h7ivhhpkmgq988293bv.apps.googleusercontent.com
+            client-secret: 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
+            scope:
+            - email
+            - profile
+    
+mybatis:
+  mapper-locations:
+  - /mappers/*.xml

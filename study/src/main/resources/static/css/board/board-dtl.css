@@ -1,0 +1,39 @@
+@charset "UTF-8";
+
+#container {
+	display : flex;
+	flex-direction : column;
+	justify-content : center;
+	align-items : center;
+	margin : 0px auto;
+	width : 1000px;
+}
+
+.board-list {
+	display: flex;
+	justify-content : center;
+	align-items : center;
+	width: 100%;
+}
+
+.board-list-table {
+	border : 1px solid black;
+	border-collapse : collapse;
+}
+
+th {
+	border : 1px solid black;
+	width : 100px;
+}
+
+td {
+	border : 1px solid black;
+	width : 400px;
+}
+
+.option-buttons {
+	margin-top:10px;
+	display: flex;
+	justify-content:flex-end;
+	width:50%;
+}

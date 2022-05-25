@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+  <mapper namespace="com.springboot.study.domain.board.BoardRepository">
+  	<resultMap type="HashMap" id="boardMap">
+  		<id column="board_code" property="board_code"/> <!-- property:맵의 키값, column:DB필드명 -->
+  		<id column="board_title" property="board_title"/>
+  		<id column="board_content" property="board_content"/>
+  		<id column="board_writer" property="board_writer"/>
+  		<id column="board_count" property="board_count"/>
+  		<id column="board_count_all" property="board_count_all"/>
+  		<id column="board_username" property="board_username"/>
+  		<id column="create_date" property="create_date"/>
+  		<id column="update_date" property="update_date"/>
+  	</resultMap>
+  	
+  	<select id="getBoardListAll" resultMap="boardMap">
+  		select
+			bm.board_code,
+			bm.board_title,
+			bm.board_content,
+			bm.board_writer,
+			um.username as board_username,
+			bm.board_count,
+			(select count(*) from board_mst) as board_count_all,
+			bm.create_date,
+			bm.update_date
+		from board_mst bm left outer join user_mst um on(um.usercode = bm.board_writer);
+  	</select>
+  	
+  	<select id="getBoardListByPage" parameterType="Integer" resultMap="boardMap">
+  		select
+			bm.board_code,
+			bm.board_title,
+			bm.board_content,
+			bm.board_writer,
+			um.username as board_username,
+			bm.board_count,
+			(select count(*) from board_mst) as board_count_all,
+			bm.create_date,
+			bm.update_date
+		from board_mst bm left outer join user_mst um on(um.usercode = bm.board_writer)
+		order by board_code desc limit ${index}, 5;
+  	</select>
+  
+	<insert id="insertBoard" parameterType="com.springboot.study.domain.board.BoardMst" useGeneratedKeys="true" keyProperty="board_code">
+		insert into board_mst values(
+			0,#{board_title},#{board_content},#{board_writer},0,now(),now());
+	</insert>
+	
+	<select id="getBoardByBoardCode" parameterType="Integer" resultMap="boardMap">
+		select
+			bm.board_code,
+			bm.board_title,
+			bm.board_content,
+			bm.board_writer,
+			um.username as board_username,
+			bm.board_count,
+			bm.create_date,
+			bm.update_date
+		from board_mst bm left outer join user_mst um on(um.usercode = bm.board_writer)
+		where bm.board_code = #{boardCode};
+	</select>
+	
+	<update id="updateBoard" parameterType="com.springboot.study.domain.board.BoardMst" useGeneratedKeys="true" keyProperty="board_code">
+		update board_mst set board_title=#{board_title}, board_content=#{board_content} where board_code = #{board_code};
+	</update>
+	
+	<delete id="deleteBoard" parameterType="Integer">
+		delete from board_mst where board_code=#{boardCode};
+	</delete>
+	
+  </mapper>
